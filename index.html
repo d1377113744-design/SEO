@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>小程序数据驾驶舱</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <header class="app-header">
+      <div>
+        <h1 id="dashboardTitle" contenteditable="true" data-meta-field="title" spellcheck="false">小程序数据驾驶舱</h1>
+        <p id="sourceLine" contenteditable="true" data-meta-field="subtitle" spellcheck="false"></p>
+      </div>
+      <div class="header-actions">
+        <button class="button button-primary" id="saveBtn" type="button" title="保存当前数据">保存</button>
+        <button class="button" id="exportBtn" type="button" title="导出当前数据">导出</button>
+        <button class="button button-warn" id="resetBtn" type="button" title="还原为原始数据">还原</button>
+        <span class="save-state" id="saveState">未保存</span>
+      </div>
+    </header>
+
+    <main class="app-shell">
+      <section class="control-band">
+        <nav class="tabs" aria-label="视图切换">
+          <button class="tab active" type="button" data-view="overview">总览</button>
+          <button class="tab" type="button" data-view="daily">每日</button>
+          <button class="tab" type="button" data-view="weekly">每周</button>
+          <button class="tab" type="button" data-view="edit">数据编辑</button>
+        </nav>
+        <div class="filters">
+          <label>
+            <span>指标</span>
+            <select id="metricSelect">
+              <option value="uv">访问UV</option>
+              <option value="orders">成交量</option>
+              <option value="new">新用户订单</option>
+            </select>
+          </label>
+          <label>
+            <span>负责人</span>
+            <select id="personFilter"></select>
+          </label>
+          <label>
+            <span>品牌分类</span>
+            <select id="brandFilter"></select>
+          </label>
+          <label>
+            <span>类型</span>
+            <select id="typeFilter"></select>
+          </label>
+          <label>
+            <span>状态</span>
+            <select id="statusFilter"></select>
+          </label>
+          <label class="search-box">
+            <span>搜索</span>
+            <input id="searchInput" type="search" placeholder="品牌名称" />
+          </label>
+        </div>
+      </section>
+
+      <section class="view active" data-panel="overview">
+        <div class="kpi-grid" id="kpiGrid"></div>
+        <div class="dashboard-grid">
+          <section class="panel">
+            <div class="panel-head">
+              <h2>每日环比</h2>
+              <span id="dailyChartLabel"></span>
+            </div>
+            <canvas id="dailyChart" height="320"></canvas>
+          </section>
+          <section class="panel">
+            <div class="panel-head">
+              <h2>每周环比</h2>
+              <span id="weeklyChartLabel"></span>
+            </div>
+            <canvas id="weeklyChart" height="320"></canvas>
+          </section>
+          <section class="panel">
+            <div class="panel-head">
+              <h2>负责人周表现</h2>
+              <span>6月8日-6月14日</span>
+            </div>
+            <canvas id="personChart" height="320"></canvas>
+          </section>
+          <section class="panel">
+            <div class="panel-head">
+              <h2>环比变化排行</h2>
+              <span id="growthChartLabel"></span>
+            </div>
+            <canvas id="growthChart" height="320"></canvas>
+          </section>
+        </div>
+        <section class="panel table-panel">
+          <div class="panel-head">
+            <h2>重点变化</h2>
+            <span id="overviewCount"></span>
+          </div>
+          <div class="table-wrap">
+            <table id="overviewTable"></table>
+          </div>
+        </section>
+      </section>
+
+      <section class="view" data-panel="daily">
+        <div class="kpi-grid compact" id="dailyKpis"></div>
+        <section class="panel table-panel">
+          <div class="panel-head">
+            <h2>每日品牌明细</h2>
+            <span id="dailyCount"></span>
+          </div>
+          <div class="table-wrap">
+            <table id="dailyTable"></table>
+          </div>
+        </section>
+      </section>
+
+      <section class="view" data-panel="weekly">
+        <div class="kpi-grid compact" id="weeklyKpis"></div>
+        <section class="panel table-panel">
+          <div class="panel-head">
+            <h2>负责人汇总</h2>
+            <span id="personSummaryCount"></span>
+          </div>
+          <div class="table-wrap">
+            <table id="personSummaryTable"></table>
+          </div>
+        </section>
+        <section class="panel table-panel">
+          <div class="panel-head">
+            <h2>每周品牌明细</h2>
+            <span id="weeklyCount"></span>
+          </div>
+          <div class="table-wrap">
+            <table id="weeklyTable"></table>
+          </div>
+        </section>
+      </section>
+
+      <section class="view" data-panel="edit">
+        <div class="edit-actions">
+          <button class="button button-primary" type="button" id="addDailyBtn">新增每日</button>
+          <button class="button button-primary" type="button" id="addWeeklyBtn">新增每周</button>
+        </div>
+        <section class="panel table-panel">
+          <div class="panel-head">
+            <h2>每日数据</h2>
+            <span id="dailyEditCount"></span>
+          </div>
+          <div class="table-wrap edit-wrap">
+            <table id="dailyEditTable"></table>
+          </div>
+        </section>
+        <section class="panel table-panel">
+          <div class="panel-head">
+            <h2>每周数据</h2>
+            <span id="weeklyEditCount"></span>
+          </div>
+          <div class="table-wrap edit-wrap">
+            <table id="weeklyEditTable"></table>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <script src="./data.js"></script>
+    <script src="./app.js"></script>
+  </body>
+</html>
